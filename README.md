@@ -1,68 +1,122 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img width="250" src="/yargs-logo.png">
+</p>
+<h1 align="center"> Yargs </h1>
+<p align="center">
+  <b >Yargs be a node.js library fer hearties tryin' ter parse optstrings</b>
+</p>
+<br>
 
-## Available Scripts
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
+[![NPM version][npm-image]][npm-url]
+[![js-standard-style][standard-image]][standard-url]
+[![Conventional Commits][conventional-commits-image]][conventional-commits-url]
+[![Slack][slack-image]][slack-url]
 
-In the project directory, you can run:
+## Description :
+Yargs helps you build interactive command line tools, by parsing arguments and generating an elegant user interface. 
 
-### `npm start`
+It gives you:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* commands and (grouped) options (`my-program.js serve --port=5000`).
+* a dynamically generated help menu based on your arguments.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+> <img width="400" src="/screen.png">
 
-### `npm test`
+* bash-completion shortcuts for commands and options.
+* and [tons more](/docs/api.md).
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+Stable version:
+```bash
+npm i yargs
+```
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Bleeding edge version with the most recent features:
+```bash
+npm i yargs@next
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Usage :
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Simple Example
 
-### `npm run eject`
+````javascript
+#!/usr/bin/env node
+const argv = require('yargs').argv
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+if (argv.ships > 3 && argv.distance < 53.5) {
+  console.log('Plunder more riffiwobbles!')
+} else {
+  console.log('Retreat from the xupptumblers!')
+}
+````
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+$ ./plunder.js --ships=4 --distance=22
+Plunder more riffiwobbles!
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+$ ./plunder.js --ships 12 --distance 98.7
+Retreat from the xupptumblers!
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Complex Example
 
-## Learn More
+```javascript
+#!/usr/bin/env node
+require('yargs') // eslint-disable-line
+  .command('serve [port]', 'start the server', (yargs) => {
+    yargs
+      .positional('port', {
+        describe: 'port to bind on',
+        default: 5000
+      })
+  }, (argv) => {
+    if (argv.verbose) console.info(`start server on :${argv.port}`)
+    serve(argv.port)
+  })
+  .option('verbose', {
+    alias: 'v',
+    default: false
+  })
+  .argv
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Run the example above with `--help` to see the help for the application.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Community :
 
-### Code Splitting
+Having problems? want to contribute? join our [community slack](http://devtoolscommunity.herokuapp.com).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Documentation :
 
-### Analyzing the Bundle Size
+### Table of Contents
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+* [Yargs' API](/docs/api.md)
+* [Examples](/docs/examples.md)
+* [Parsing Tricks](/docs/tricks.md)
+  * [Stop the Parser](/docs/tricks.md#stop)
+  * [Negating Boolean Arguments](/docs/tricks.md#negate)
+  * [Numbers](/docs/tricks.md#numbers)
+  * [Arrays](/docs/tricks.md#arrays)
+  * [Objects](/docs/tricks.md#objects)
+* [Advanced Topics](/docs/advanced.md)
+  * [Composing Your App Using Commands](/docs/advanced.md#commands)
+  * [Building Configurable CLI Apps](/docs/advanced.md#configuration)
+  * [Customizing Yargs' Parser](/docs/advanced.md#customizing)
+* [Contributing](/contributing.md)
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[travis-url]: https://travis-ci.org/yargs/yargs
+[travis-image]: https://img.shields.io/travis/yargs/yargs/master.svg
+[coveralls-url]: https://coveralls.io/github/yargs/yargs
+[coveralls-image]: https://img.shields.io/coveralls/yargs/yargs.svg
+[npm-url]: https://www.npmjs.com/package/yargs
+[npm-image]: https://img.shields.io/npm/v/yargs.svg
+[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
+[conventional-commits-image]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
+[conventional-commits-url]: https://conventionalcommits.org/
+[slack-image]: http://devtoolscommunity.herokuapp.com/badge.svg
+[slack-url]: http://devtoolscommunity.herokuapp.com
